@@ -2,20 +2,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from IPython.display import display
+import filter
 
 
-datasets = dict()
-
-for filename in os.listdir('data'):
-    path = os.path.join('data', filename)
-    with open(path) as f:
-        data = pd.read_csv(f)
-        datasets[filename[:-4]] = data
 
 
-for key, value in datasets.items():
-    print(key)
+
+def main():
+    data = filter.build_csv('data\\14-15_grad.csv')
+    print(data.columns)
 
 
-df = datasets['14-15_grad']
-print(df.columns)
+
+
+if __name__ == '__main__':
+    main()
+

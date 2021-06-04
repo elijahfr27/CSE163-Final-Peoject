@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-    "python.pythonPath": "C:\\Users\\Elijah\\anaconda3\\python.exe",
-=======
-    "python.pythonPath": "/usr/local/bin/python3",
->>>>>>> 3d6d232b69448ea134b9ff72b16ba42b29150d5b
+    "python.pythonPath": "project_env\\Scripts\\python.exe",
     "terminal.integrated.shellArgs.windows": [
         "-ExecutionPolicy",
         "Bypass"
