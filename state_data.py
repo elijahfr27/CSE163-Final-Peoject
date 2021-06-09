@@ -1,20 +1,25 @@
 """
-CSE163 Final Project
+CSE 163 Final Project
 
 This function merges the condensed csv data into a single
 dataframe and creates the appropriate visualizations for
-each set of data.
+the state data.
 """
 
 # import statements
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.set()
 
 
 def adding_school_year(data):
-    """ Takes in dataframe and adds the columns needed """
+    """ Takes in dataframe and changes the form of the school
+    year to only include the end year as an integer.
+    """
     years = data["SchoolYear"].str.slice(0, 4)
-    years = years.astype(int) + 1
-    data.loc[:, "SchoolYear"] = years
+    data.loc[:, "SchoolYear"] = years.astype(int) + 1
     return data
 
 
@@ -22,23 +27,28 @@ def state_graduation_dataframe(grad, enroll, assess, behavior, classes):
     """ Read in the corresponding dataframe and merge them. Return the merged
     dataframe to use for plotting.
     """
+    # graduation data
+    state_graduation = grad[["SchoolYear", "GraduationRate"]]
+    state_graduation["GraduationRate"] *= 100
+
     # enrollment data
     state_enroll = enroll[["SchoolYear", "All Students", "White"]]
     state_enroll = adding_school_year(state_enroll)
     state_enroll = state_enroll.groupby("SchoolYear").sum()
-    state_enroll["Ethnicity"] = 1 - \
-        (state_enroll["White"] / state_enroll["All Students"])
-    state_enroll = state_enroll["Ethnicity"]
+    state_enroll["Diversity"] = (
+        1 - (state_enroll["White"] / state_enroll["All Students"])) * 100
+    state_enroll = state_enroll["Diversity"]
 
     # assessment data
     state_assess = assess[["SchoolYear", "PercentMetTestedOnly"]]
     state_assess = adding_school_year(state_assess)
     state_assess = state_assess.groupby("SchoolYear").mean()
+    state_assess["PercentMetTestedOnly"] *= 100
 
     # behavior data
     state_behavior = behavior[["SchoolYear", "DisciplineRate"]]
     state_behavior = adding_school_year(state_behavior)
-    # converting the rates into numeric rates
+    # converting the rates into numeric values
     state_behavior["DisciplineRate"] = state_behavior[
         "DisciplineRate"].str.strip("< %")
     state_behavior["DisciplineRate"] = state_behavior[
@@ -52,15 +62,52 @@ def state_graduation_dataframe(grad, enroll, assess, behavior, classes):
          "PercentTakingCollegeInTheHighSchool", "PercentTakingCambridge",
          "PercentTakingRunningStart", "PercentTakingCTETechPrep"]]
     state_classes = state_classes.groupby("SchoolYear").sum()
+    state_classes["PercentTakingAP"] *= 100
 
     # mergining dataframes
-    state_graduation = grad[["SchoolYear", "GraduationRate"]]
     state_data = state_graduation.merge(state_enroll, how="outer",
                                         on="SchoolYear")
     state_data = state_data.merge(state_assess, how="outer", on="SchoolYear")
     state_data = state_data.merge(state_behavior, how="outer", on="SchoolYear")
     state_data = state_data.merge(state_classes, how="outer", on="SchoolYear")
     return state_data
+
+
+def plotting_state_graduation_rates(data):
+    """ Takes in merged dataframe and produces the different plots
+    """
+    sns.relplot(x='SchoolYear', y='GraduationRate', data=data, kind="scatter")
+    plt.title("Graduation Rates by Year")
+    plt.xlabel("Year")
+    plt.ylabel("Graduation Rate")
+    plt.savefig("visualizations/grad_rates_year.png", bbox_inches="tight")
+    plt.clf()
+
+
+def subplot_setup(axis):
+    axis.set_xlabel("")
+    axis.set_ylabel("")
+    axis.set_ylim(76, 84)
+
+
+def plotting_state_graduation_vs_other(data):
+    # graduation rate vs. different factors
+    fig, [[ax1, ax2], [ax3, ax4]] = plt.subplots(2, 2)
+    sns.scatterplot(x="Ethnicity", y="GraduationRate", data=data, ax=ax1)
+    ax1.set_title("Graduation Rate vs. Student Diversity")
+    subplot_setup(ax1)
+    sns.scatterplot(x="PercentMetTestedOnly", y="GraduationRate",
+                    data=data, ax=ax2)
+    ax2.set_title("Graduation Rate vs. % Meeting Standard on Tests")
+    subplot_setup(ax2)
+    sns.scatterplot(x="DisciplineRate", y="GraduationRate", data=data, ax=ax3)
+    ax3.set_title("Graduation Rate vs. Discipline Rate")
+    subplot_setup(ax3)
+    sns.scatterplot(x="PercentTakingAP", y="GraduationRate", data=data, ax=ax4)
+    ax4.set_title("Graduation Rate vs. % Students Taking AP Classes")
+    subplot_setup(ax4)
+    plt.savefig("visualizations/grad_rate_factors.png", bbox_inches="tight")
+    plt.clf()
 
 
 def main():
@@ -72,6 +119,8 @@ def main():
     state_data = state_graduation_dataframe(
         state_grad, state_enroll, state_assess, state_behavior, state_classes)
     print(state_data)
+    plotting_state_graduation_rates(state_data)
+    plotting_state_graduation_vs_other(state_data)
 
 
 if __name__ == '__main__':

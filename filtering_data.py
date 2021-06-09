@@ -84,8 +84,7 @@ def district_graduation_rates(data):
     """ Takes in graduation dataset, filters to only
     graduation rates for all students for each district. """
     # reducing to relevant columns
-    columns = ["SchoolYear", "DistrictName", "StudentGroup",
-               "Cohort", "GraduationRate"]
+    columns = ["DistrictName", "StudentGroup", "Cohort", "GraduationRate"]
     cut_data = data[columns]
     # masks for data
     area = cut_data["DistrictName"] != "State Total"
@@ -96,7 +95,7 @@ def district_graduation_rates(data):
 
 def district_enrollment(data):
     # reducing to relevant columns
-    columns = ["SchoolYear", "DistrictName", "CurrentSchoolType", "Gradelevel",
+    columns = ["DistrictName", "CurrentSchoolType", "Gradelevel",
                "All Students", "American Indian/ Alaskan Native", "Asian",
                "Black/ African American", "Hispanic/ Latino of any race(s)",
                "Native Hawaiian/ Other Pacific Islander",
@@ -114,7 +113,7 @@ def district_enrollment(data):
 
 def district_assessment(data):
     # reducing to relevant columns
-    columns = ["SchoolYear", "DistrictName", "CurrentSchoolType",
+    columns = ["DistrictName", "CurrentSchoolType",
                "StudentGroup", "GradeLevel", "Test Administration (group)",
                "TestSubject", "PercentMetTestedOnly"]
     cut_data = data[columns]
@@ -132,7 +131,7 @@ def district_assessment(data):
 
 def district_classes(data):
     # reducing to relevant columns
-    columns = ["SchoolYear", "DistrictName", "CurrentSchoolType",
+    columns = ["DistrictName", "CurrentSchoolType",
                "StudentGroup", "GradeLevel", "Measures", "PercentTakingAP",
                "PercentTakingIB", "PercentTakingCollegeInTheHighSchool",
                "PercentTakingCambridge", "PercentTakingRunningStart",
