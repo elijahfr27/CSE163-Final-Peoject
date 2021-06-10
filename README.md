@@ -1,6 +1,8 @@
 ## CSE 163 Final Project: Working with Education Data
 The project file contains all the functions for creating the project
-visualizations and running the machine learning. 
+visualizations and running the machine learning. The data files need
+to be downloaded and added to the project folder before any of the
+programs will run.
 
 ## Libraries
 The libraries that need to be installed to use the files are pandas, seaborn,

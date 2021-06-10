@@ -116,6 +116,10 @@ def district_data_merge():
     assert (1, 7) == test_merge.shape
 
 
+def regression_tester():
+    test
+
+
 def main():
     state_data()
     district_data()
