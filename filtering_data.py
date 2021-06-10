@@ -193,7 +193,7 @@ def district_classes(data):
 def main():
     # graduation data
     grad_data = pd.read_csv(
-        "data/Report_Card_Graduation_2014-15_to_Most_Recent_Year.csv",
+        "Report_Card_Graduation_2014-15_to_Most_Recent_Year.csv",
         low_memory=False)
     state_grad = state_graduation_rates(grad_data)
     state_grad.to_csv("altered data/state_graduation_rate.csv",
@@ -204,7 +204,7 @@ def main():
 
     # enrollment data
     enroll_data = pd.read_csv(
-        "data/Report_Card_Enrollment_from_2014-15_to_Current_Year.csv",
+        "Report_Card_Enrollment_from_2014-15_to_Current_Year.csv",
         low_memory=False)
     state_enroll = state_enrollment(enroll_data)
     state_enroll.to_csv("altered data/state_enrollment.csv", index=False)
@@ -213,7 +213,7 @@ def main():
 
     # assessment data
     assess_data = pd.read_csv(
-        "data/Report_Card_Assessment_Data_from_2014-15_to_Current_Year.csv",
+        "Report_Card_Assessment_Data_from_2014-15_to_Current_Year.csv",
         low_memory=False)
     state_assess = state_assessment(assess_data)
     state_assess.to_csv("altered data/state_assessment.csv", index=False)
@@ -222,14 +222,14 @@ def main():
 
     # behavior data
     behavior_data = pd.read_csv(
-        "data/Report_Card_Discipline_for_2014-15_to_Current_Year.csv",
+        "Report_Card_Discipline_for_2014-15_to_Current_Year.csv",
         low_memory=False)
     discipline = behavior(behavior_data)
     discipline.to_csv("altered data/behavior.csv", index=False)
 
     # classes data
     class_data = pd.read_csv(
-        "data/Report_Card_SQSS_from_2014-15_to_Current_Year.csv",
+        "Report_Card_SQSS_from_2014-15_to_Current_Year.csv",
         low_memory=False)
     state_class = state_classes(class_data)
     state_class.to_csv("altered data/state_classes.csv", index=False)
