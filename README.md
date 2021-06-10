@@ -36,7 +36,8 @@ be run. All the python files can be run from the terminal by using:
 ```bash
 python program_name.py
 ```
+
 The name of the file should be filled in for program_name. The filtering_data.py should be run
 first to generate the condensed data. Then the state_data_visualizations.py and district_data_visulization.py
 can be run since they rely on the condensed data. These will generate visualizations of the data.
-Then the machine learning file can be run for the machine learning model generated from the district data.
+Then the machine learning file can be run for the machine learning model generated from the modified district data. 
