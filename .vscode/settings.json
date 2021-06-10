@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/usr/local/bin/python3",
+    "python.pythonPath": "project_env\\Scripts\\python.exe",
     "terminal.integrated.shellArgs.windows": [
         "-ExecutionPolicy",
         "Bypass"
