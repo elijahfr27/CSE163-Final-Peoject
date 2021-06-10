@@ -1,20 +1,28 @@
 """
 CSE 163 Final Project
 
-This function merges the condensed csv data into a single
-dataframe and creates the appropriate visualizations for
-the district data.
+This file containes the functions for mergining the condensed csv
+data files into a single dataframe and creates the appropriate
+visualizations for the district based data.
 """
 
 # import statements
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+pd.options.mode.chained_assignment = None
 
 sns.set()
 
 
 def district_graduation_dataframe(grad, enroll, assess, behavior, classes):
+    """ This function takes graduation rates, school enrollment,
+    assessment results, discipline rates, and class enrollment dataframes
+    corresponding to state data and returns a single dataframe containing
+    all the data averaged and merged according to school district. The
+    returned dataframe only includes the top 15 districts according to
+    the graduation rate.
+    """
     # graduation data
     district_grad = grad.dropna()
     district_grad = grad[["DistrictName", "GraduationRate"]]
@@ -44,9 +52,9 @@ def district_graduation_dataframe(grad, enroll, assess, behavior, classes):
     # classes data
     district_classes = classes.dropna()
     district_classes = district_classes[
-        ["DistrictName", "PercentTakingAP", "PercentTakingIB",
-         "PercentTakingCollegeInTheHighSchool", "PercentTakingCambridge",
-         "PercentTakingRunningStart", "PercentTakingCTETechPrep"]]
+        ["DistrictName", "PercentTakingAP",
+         "PercentTakingCollegeInTheHighSchool",
+         "PercentTakingRunningStart"]]
     district_classes = (district_classes.groupby("DistrictName").mean()) * 100
 
     # merging data
@@ -63,6 +71,9 @@ def district_graduation_dataframe(grad, enroll, assess, behavior, classes):
 
 
 def plotting_district_graduation_rates(data):
+    """ This function takes the merged district dataframe and plots
+    the top 15 4 year graduation rates by school district.
+    """
     sns.barplot(x="GraduationRate", y=data.index, data=data, palette="Blues_d")
     plt.title("Average Graduation Rate by District")
     plt.xlabel("Graduation Rate (%)")
@@ -72,36 +83,60 @@ def plotting_district_graduation_rates(data):
 
 
 def subplot_setup(axis):
+    """ This function takes in an axes or graph positions
+    and sets up the axes labels.
+    """
     axis.set_xlabel("")
     axis.set_ylabel("")
+    axis.set_xlim(0, 100)
 
 
 def plotting_district_other_rates(data):
-    fig, [[ax1, ax2], [ax3, ax4]] = plt.subplots(2, 2, figsize=(30, 10))
+    """ This function takes in the merged state data dataframe
+    and plots different factors for the school districts with
+    4 year graduation rate in the top 15.
+    """
+    fig, [[ax1, ax2, ax3], [ax4, ax5, ax6]] = plt.subplots(
+        2, 3, figsize=(20, 10))
+
     sns.barplot(x="Diversity", y=data.index, data=data,
                 palette="Blues_d", ax=ax1)
     ax1.set_title("Average Diversity by District")
-    ax1.set_yticklabels(data.index, fontsize=7)
+    ax1.set_yticklabels(data.index, fontsize=10)
     subplot_setup(ax1)
 
     sns.barplot(x="PercentMetTestedOnly", y=data.index, data=data,
                 palette="Blues_d", ax=ax2)
     ax2.set_title("Average % Meeting Standard for Testing by District")
-    ax2.set_yticklabels(data.index, fontsize=7)
+    ax2.set_yticklabels("")
     subplot_setup(ax2)
 
     sns.barplot(x="DisciplineRate", y=data.index, data=data,
                 palette="Blues_d", ax=ax3)
     ax3.set_title("Average Discipline Rate by District")
-    ax3.set_yticklabels(data.index, fontsize=7)
+    ax3.set_yticklabels("")
     subplot_setup(ax3)
 
     sns.barplot(x="PercentTakingAP", y=data.index, data=data,
                 palette="Blues_d", ax=ax4)
     ax4.set_title("Average % of Students Taking AP by District")
     subplot_setup(ax4)
-    ax4.set_yticklabels(data.index, fontsize=7)
+    ax4.set_yticklabels(data.index, fontsize=10)
 
+    sns.barplot(x="PercentTakingCollegeInTheHighSchool", y=data.index,
+                data=data, palette="Blues_d", ax=ax5)
+    ax5.set_title("Average % of Students Taking College In The High"
+                  + " School by District", fontsize=10)
+    subplot_setup(ax5)
+    ax5.set_yticklabels("")
+
+    sns.barplot(x="PercentTakingRunningStart", y=data.index, data=data,
+                palette="Blues_d", ax=ax6)
+    ax6.set_title("Average % of Students in Running Start by District")
+    subplot_setup(ax6)
+    ax6.set_yticklabels("")
+
+    fig.tight_layout(pad=1.0)
     plt.savefig("visualizations/district_other_factors.png",
                 bbox_inches="tight")
 

@@ -6,9 +6,9 @@ data and creates a condensed csv for each filtered dataset.
 """
 # import statements
 import pandas as pd
-import state_data
+import state_data_visualizations
 import ml
-import district_data
+import district_data_visualizatons
 
 
 def state_graduation_rates(data, visualizations = True):
