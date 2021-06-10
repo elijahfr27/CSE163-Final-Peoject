@@ -1,33 +1,37 @@
+"""
+CSE 163 Final Project
+
+This file containes the functions for creating and training the
+machine learning model. This function also creates the data set
+for the machine learning model.
+"""
 import pandas as pd
 import sklearn.datasets as skdf
 from IPython.display import display
-import filtering_data as fd
-
+import machine_learning_filtering_data as fd
 
 
 def merge(grad, classes, enroll, assess):
-        #df = grad.merge(classes, how = 'outer')
-        #df = df.merge(enroll, how = 'outer')
-        #df = df.merge(assess, how = 'outer')
-        pd.concat([grad, classes, enroll, assess])
-    #df = pd.concat(data, join = 'outer', ignore_index=True, )
-    #df = df[df["GraduationRate"].notna()]
-        return df
+    # df = grad.merge(classes, how = 'outer')
+    # df = df.merge(enroll, how = 'outer')
+    # df = df.merge(assess, how = 'outer')
+    pd.concat([grad, classes, enroll, assess])
+    # df = pd.concat(data, join = 'outer', ignore_index=True, )
+    # df = df[df["GraduationRate"].notna()]
+    return df
 
 
 def create_training():
     data = pd.read_csv('altered data\ml_df.csv')
     scrub_mask = (data['GradeLevel'] == 12) & (data['SchoolYear'] < 2018)
-    ata = data[scrub_mask]
+    data = data[scrub_mask]
     columns = ['SchoolYear', 'OrganizationLevel', 'County', 'DistrictName',
-            'SchoolName', 'StudentGroup', 'GraduationRate']
+               'SchoolName', 'StudentGroup', 'GraduationRate']
     data = data[columns]
-    data = data.dropna(subset = ['DistrictName', 'GraduationRate'])
+    data = data.dropna(subset=['DistrictName', 'GraduationRate'])
     data.to_csv('altered data/test.csv')
-    
-    
 
-    
+
 def main(class_data,assess_data, enroll_data, grad_data):
     class_parsed = fd.state_classes(class_data, False)
     assess_parsed = fd.state_assessment(assess_data, False)
@@ -36,6 +40,7 @@ def main(class_data,assess_data, enroll_data, grad_data):
     df_merged = merge(grad_data, class_data, enroll_data, assess_data)
     df_merged.to_csv('altered data/ml_df.csv')
     create_training()
+
 
 if __name__ == '__main__':
     #main()
