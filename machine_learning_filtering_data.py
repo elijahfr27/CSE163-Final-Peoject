@@ -6,9 +6,7 @@ data and creates a condensed csv for each filtered dataset.
 """
 # import statements
 import pandas as pd
-import state_data_visualizations
-import ml
-import district_data_visualizatons
+import machine_learning
 
 
 def state_graduation_rates(data, visualizations=True):
@@ -229,11 +227,11 @@ def main():
     district_class = district_classes(class_data)
     district_class.to_csv("altered data/district_classes.csv", index=False)
 
-    #district_data.main()
-    #state_data.main()
-    ml.main(class_data, assess_data, enroll_data, grad_data)
+    # district_data.main()
+    # state_data.main()
+    machine_learning.main(class_data, assess_data, enroll_data, grad_data)
 
-    #Dataframes for ML
+    # Dataframes for ML
 
 
 if __name__ == '__main__':
